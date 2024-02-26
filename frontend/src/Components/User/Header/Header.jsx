@@ -6,12 +6,14 @@ import { GoHomeFill } from "react-icons/go";
 import { PiTelegramLogoFill } from "react-icons/pi";
 import HeaderItems from './HeaderItems';
 
+import { Link, NavLink } from 'react-router-dom';
 
 function Header() {
     const menu=[
         {
             name:'Home',
-            icon:GoHomeFill
+            icon:GoHomeFill,
+            link:'/'
         },
         {
             name:'Trips',
@@ -33,17 +35,21 @@ function Header() {
             <img src={logo} className='w-[150px] md:w-[200px] object-cover cursor-pointer mr-20' />
             <div className='hidden md:flex gap-8'>
                 {menu.map((item ,index)=>(
-                    <HeaderItems key={index} name={item.name} Icon={item.icon} />
+                    <Link key={index} to={item.link} className="text-black hover:text-gray-500">{/* Wrap menu item with Link */}
+                        <HeaderItems name={item.name} Icon={item.icon} />
+                    </Link>
                 ))}
             </div>
         </div>
         <div className="flex items-center gap-12"> {/* Flex container for profile picture */}
             <div className='md:hidden flex gap-8'>
                 {menu.map((item ,index)=>(
-                    <HeaderItems key={index} name={item.name} Icon={item.icon} />
+                    <HeaderItems key={index} to={item.link} name={item.name} Icon={item.icon} />
                 ))}
             </div>
-            <img className='flex w-[30px] rounded-full cursor-pointer' src={profile} />
+            <NavLink to="/login" activeClassName="active"> 
+                <img className='flex w-[30px] rounded-full cursor-pointer' src={profile} />
+            </NavLink>
         </div>
     </div>
     

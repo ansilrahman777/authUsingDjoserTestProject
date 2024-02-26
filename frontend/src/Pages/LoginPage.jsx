@@ -1,105 +1,106 @@
 import register_bg from './../assets/Images/register_bg.jpg';
 import login_form_bg from './../assets/Images/login_form_bg.jpg';
 import { FaUser } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useState } from 'react';
+import Header from '../Components/User/Header/Header';
 
 
-function LoginPage() {
+const LoginPage = () => {
+  const [formData, setFormData] = useState({"email":""})
+  const {email,password}=formData
+  const handleChange = (e) => {
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value
+    }));
+    console.log(formData);
+  };
+  const handleSubmit = () => {
+    
+  }
+
   return (
-    <div className='min-h-screen py-10 bg-cover' style={{ backgroundImage: `url(${register_bg})` }}>
-      <div className='container mx-auto'>
-        <div className="flex flex-col md:flex-row w-10/12  md:w-8/12 bg-sky-950 bg-opacity-90 mx-auto rounded-md overflow-hidden shadow-lg">
-          <div className="w-full md:w-1/2 flex flex-col justify-center p-12 bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url(${login_form_bg})` }}>
-            <div className="mt-11 mb-auto">  
-                <h2 className='text-white text-4xl font-bold ' style={{ fontFamily: 'cursive' }}>LOGIN</h2>
-                <p className='text-white' style={{ fontFamily: 'cursive' }}>Are you planning a quick getaway? then you are at theright door.</p>
+    <>
+      <div className='min-h-screen bg-cover' style={{ backgroundImage: `url(${register_bg})` }}>
+      <Header/>
+        <div className='container mx-auto mt-10'>
+          <div className="flex flex-col md:flex-row w-10/12  md:w-8/12 bg-sky-300 bg-opacity-70 mx-auto rounded-md overflow-hidden shadow-lg">
+            <div className="w-full md:w-1/2 flex flex-col justify-center p-12 bg-no-repeat bg-cover bg-center" style={{ backgroundImage: `url(${login_form_bg})` }}>
+              <div className="mt-11 mb-auto">  
+                  <h2 className='text-white text-4xl font-bold ' style={{ fontFamily: 'cursive' }}>LOGIN</h2>
+                  <p className='text-white' style={{ fontFamily: 'cursive' }}>Are you planning a quick getaway? then you are at theright door.</p>
+              </div>
             </div>
-          </div>
-          <div className="w-full md:w-3/4 flex flex-col items-center justify-center py-16 px-12">
-            <FaUser className="h-8 w-8 mr-2 text-white" />
-            <p className='font-medium text-white'>Signup to Register</p>
-            <form className="px-8 pt-4 pb-8">
-              <div className="mb-2">
-                {/* <label htmlFor="firstName" className="block text-gray-700 font-bold mb-2">
-                  First Name
-                </label> */}
-                <input
-                  type="text"
-                  id="firstName"
-                  value='firstName'
-                  className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-2">
-                {/* <label htmlFor="lastName" className="block text-gray-700 font-bold mb-2">
-                  Last Name
-                </label> */}
-                <input
-                  type="text"
-                  id="lastName"
-                  value='lastName'
-                  className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-2">
-                {/* <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
-                  Email
-                </label> */}
-                <input
-                  type="email"
-                  id="email"
-                  value='email'
-                  className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-2">
-                {/* <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
-                  Password
-                </label> */}
-                <input
-                  type="password"
-                  id="password"
-                  value='confirmPassword'
-                  className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="mb-2">
-                {/* <label htmlFor="confirmPassword" className="block text-gray-700 font-bold mb-2">
-                  Confirm Password
-                </label> */}
-                <input
-                  type="password"
-                  id="confirmPassword"
-                  value='confirmPassword'
-                  className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
-                />
-              </div>
-              <div className="flex items-center justify-center">
-                <button
-                  type="submit"
-                  className="bg-teal-800 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded-full w-full focus:outline-none focus:shadow-outline"
-                >
-                  SIGN UP
-                </button>
-              </div>
-              <div className="flex items-center justify-center mt-2">
-                <hr className="border-t border-gray-300 w-full" />
-                <span className="px-3 text-white text-xs">OR</span>
-                <hr className="border-t border-gray-300 w-full" />
-              </div>
-              
-              <div className="flex items-center justify-center mt-4">
-                <p className="text-white">
-                  Dont have an account Yet?{' '}
-                  <a href="/login" className="text-blue-500 hover:text-blue-700">
-                    Login Here
-                  </a>
-                </p>
-              </div>
-            </form>
+            <div className="w-full md:w-3/4 flex flex-col items-center justify-center py-16 px-12">
+              <FaUser className="h-8 w-8 mr-2 text-white mt-14" />
+              <p className='font-medium text-white'>User Login </p>
+              <form className="px-8 pt-4 pb-8">
+
+                <div className="mb-2">
+                  {/* <label htmlFor="email" className="block text-gray-700 font-bold mb-2">
+                    Email
+                  </label> */}
+                  <input
+                    type='email'
+                    placeholder=' Email'
+                    name='email'
+                    value={email}
+                    onChange={handleChange}
+                    className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="mb-2">
+                  {/* <label htmlFor="password" className="block text-gray-700 font-bold mb-2">
+                    Password
+                  </label> */}
+                  <input
+                    type='password'
+                    placeholder=' Password'
+                    name='password'
+                    value={password}
+                    onChange={handleChange}
+                    className="appearance-none border rounded-full w-full py-1 px-2 leading-tight focus:outline-none focus:shadow-outline"
+                    required
+                  />
+                </div>
+                <div className="flex items-center justify-center">
+                  <button
+                    type="submit"
+                    onClick={handleSubmit}
+                    className="bg-teal-800 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded-full w-full focus:outline-none focus:shadow-outline"
+                  >
+                    SIGN UP
+                  </button>
+                </div>
+                <div className="flex items-center justify-center mt-4">
+                  <div className="text-center">
+                    <p>
+                      <Link to="/register" className="text-white text-sm hover:text-blue-700">
+                        forgot password
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-center mt-4">
+                  <div className="text-center">
+                    <p className="text-white">Do not have an account Yet?</p>
+                    <p>
+                      <Link to="/register" className="text-white hover:text-blue-700">
+                        Signup Here
+                      </Link>
+                    </p>
+                  </div>
+                </div>
+
+              </form>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
