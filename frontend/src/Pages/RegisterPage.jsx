@@ -3,10 +3,12 @@ import register_bg from './../assets/Images/register_bg.jpg';
 import register_form_bg from './../assets/Images/register_form_bg.jpg';
 import { FaUser } from 'react-icons/fa';
 import { FcGoogle } from "react-icons/fc";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Header from '../Components/User/Header/Header';
-
+import { register } from '../redux/auth/authSlice';
+import { useDispatch ,useSelector} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +22,11 @@ const RegisterPage = () => {
 
   const { first_name, last_name, email, mobile, password, re_password } = formData;
 
+  const dispatch = useDispatch();
+  const navigate =useNavigate()
+
+  const {user,isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -30,18 +37,34 @@ const RegisterPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault()
-
-    if (!first_name){
-      toast.error("First Name is Required")
-    }
-
+    
     if (password != re_password) {
       toast.error("Password Doesn't match")
+    }else {
+      const userData ={
+        first_name,
+        last_name,
+        email,
+        mobile,
+        password,
+        re_password 
+      }
+      dispatch(register(userData))
     }
-
-
-
   }
+
+  useEffect(() => {
+    if (isError){
+      toast.error(message)
+    }
+    if (isSuccess || user){
+      navigate("/login")
+      toast.success("An activation set to email")
+    }
+  
+    
+  })
+  
 
   return (
     <>
