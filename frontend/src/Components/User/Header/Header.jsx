@@ -4,11 +4,30 @@ import { MdArticle  ,MdPermContactCalendar } from "react-icons/md";
 
 import { GoHomeFill } from "react-icons/go";
 import { PiTelegramLogoFill } from "react-icons/pi";
+import { IoLogOut } from "react-icons/io5";
+
 import HeaderItems from './HeaderItems';
 
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink ,useNavigate } from 'react-router-dom';
+
+import { useSelector, useDispatch } from 'react-redux';
+import { logout, reset } from './../../../redux/auth/authSlice'; 
+import { toast } from 'react-toastify';
+
 
 function Header() {
+
+    const user = useSelector(state => state.auth.user);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    const handleLogout = () => {
+        dispatch(logout()); // Dispatch the logout action
+        dispatch(reset())
+        navigate("/login")
+        toast.success("logout succesfull")
+    };
+
     const menu=[
         {
             name:'Home',
@@ -47,10 +66,16 @@ function Header() {
                     <HeaderItems key={index} to={item.link} name={item.name} Icon={item.icon} />
                 ))}
             </div>
+            {user && (
+                <button className="text-white hover:text-gray-500" onClick={handleLogout}>
+                <span>Logout</span> <IoLogOut className="inline-block" />
+                </button>
+            )}
             <NavLink to="/login" activeClassName="active"> 
                 <img className='flex w-[30px] rounded-full cursor-pointer' src={profile} />
             </NavLink>
         </div>
+        
     </div>
     
   )

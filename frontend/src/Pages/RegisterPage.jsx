@@ -6,9 +6,10 @@ import { FcGoogle } from "react-icons/fc";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Header from '../Components/User/Header/Header';
-import { register } from '../redux/auth/authSlice';
+import { register,reset } from '../redux/auth/authSlice';
 import { useDispatch ,useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import Spinner from '../Components/Spinner';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -60,10 +61,12 @@ const RegisterPage = () => {
     if (isSuccess || user){
       navigate("/login")
       toast.success("An activation set to email")
+      
     }
+    dispatch(reset())
   
     
-  })
+  },[isError,isSuccess,user,navigate,dispatch])
   
 
   return (
@@ -75,6 +78,7 @@ const RegisterPage = () => {
             <div className="w-full md:w-3/4 flex flex-col items-center justify-center py-16 px-12">
               <FaUser className="h-8 w-8 mr-2 text-white" />
               <p className='font-medium text-white'>Signup to Register</p>
+              {isLoading && <Spinner/>}
               <form className="px-8 pt-4 pb-8">
                 <div className="mb-2">
                   <input

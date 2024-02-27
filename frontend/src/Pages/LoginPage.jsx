@@ -2,13 +2,28 @@ import register_bg from './../assets/Images/register_bg.jpg';
 import login_form_bg from './../assets/Images/login_form_bg.jpg';
 import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '../Components/User/Header/Header';
-
-
+import { login,reset } from '../redux/auth/authSlice';
+import { useDispatch ,useSelector} from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import Spinner from '../Components/Spinner';
+import { toast } from 'react-toastify';
 const LoginPage = () => {
-  const [formData, setFormData] = useState({"email":""})
+
+  const [formData, setFormData] = useState({
+    "email":"",
+    "password":"",
+  
+  })
+
   const {email,password}=formData
+
+  const dispatch = useDispatch()
+  const navigate =useNavigate()
+
+  const {user,isLoading,isError,isSuccess,message}=useSelector((state)=>state.auth)
+
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
@@ -16,9 +31,30 @@ const LoginPage = () => {
     }));
     console.log(formData);
   };
-  const handleSubmit = () => {
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+      const userData ={
+        email,
+        password,
+      }
+      dispatch(login(userData))
     
   }
+
+  useEffect(() => {
+    if (isError){
+      toast.error(message)
+    }
+    if (isSuccess || user){
+      navigate("/")      
+    }
+    dispatch(reset())
+  
+    
+  },[isError,isSuccess,user,navigate,dispatch])
+  
+
 
   return (
     <>
@@ -35,6 +71,7 @@ const LoginPage = () => {
             <div className="w-full md:w-3/4 flex flex-col items-center justify-center py-16 px-12">
               <FaUser className="h-8 w-8 mr-2 text-white mt-14" />
               <p className='font-medium text-white'>User Login </p>
+              {isLoading&&<Spinner/>}
               <form className="px-8 pt-4 pb-8">
 
                 <div className="mb-2">
@@ -71,7 +108,7 @@ const LoginPage = () => {
                     onClick={handleSubmit}
                     className="bg-teal-800 hover:bg-teal-700 text-white font-bold py-1 px-2 rounded-full w-full focus:outline-none focus:shadow-outline"
                   >
-                    SIGN UP
+                    LOGIN
                   </button>
                 </div>
                 <div className="flex items-center justify-center mt-4">

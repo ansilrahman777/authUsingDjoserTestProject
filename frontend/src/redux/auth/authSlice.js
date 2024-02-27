@@ -24,6 +24,39 @@ export const register = createAsyncThunk(
     }
 )
 
+export const login = createAsyncThunk(
+    "/authlogin",
+    async(userData,tunkAPI)=>{
+        try{
+            return await authService.login(userData)
+        } catch (error){
+            const message = (error.response && error.response.data
+                && error.response.data.message) || error.message || error.toString()
+           return tunkAPI.rejectWithValue(message) 
+        }   
+    }
+)
+
+export const logout = createAsyncThunk(
+    "auth/logout",
+    async()=>{
+           authService.logout()
+    }
+)
+
+export const activate = createAsyncThunk(
+    "auth/activate",
+    async(userData,tunkAPI)=>{
+        try{
+            return await authService.activate(userData)
+        } catch (error){
+            const message = (error.response && error.response.data
+                && error.response.data.message) || error.message || error.toString()
+           return tunkAPI.rejectWithValue(message) 
+        }   
+    }
+)
+
 export  const authSlice = createSlice({
     name:'auth',
     initialState,
@@ -52,11 +85,47 @@ export  const authSlice = createSlice({
             state.isSuccess=false
             state.isError=true
             state.message=action.payload
+            state.user=null
         })
+        .addCase(login.pending,(state)=>{
+            state.isLoading=true
+        })
+        .addCase(login.fulfilled,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.user=action.payload
+        })
+        .addCase(login.rejected,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=false
+            state.isError=true
+            state.message=action.payload
+            state.user=null
+        })
+        .addCase(logout.fulfilled,(state)=>{
+            state.user=null
+        })
+        .addCase(activate.pending,(state)=>{
+            state.isLoading=true
+        })
+        .addCase(activate.fulfilled,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=true
+            state.user=action.payload
+        })
+        .addCase(activate.rejected,(state,action)=>{
+            state.isLoading=false
+            state.isSuccess=false
+            state.isError=true
+            state.message=action.payload
+            state.user=null
+        })
+        
 
     }
 }
 )
+export const {reset} =authSlice.actions
 export default authSlice.reducer
 
 
