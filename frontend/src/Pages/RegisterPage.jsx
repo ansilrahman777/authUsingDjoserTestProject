@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Header from '../Components/User/Header/Header';
-import { register,reset } from '../redux/auth/authSlice';
+import { getUserInfo, register,reset } from '../redux/auth/authSlice';
 import { useDispatch ,useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../Components/Spinner';
@@ -55,18 +55,27 @@ const RegisterPage = () => {
   }
 
   useEffect(() => {
-    if (isError){
-      toast.error(message)
+    if (isError) {
+      toast.error(message);
     }
-    if (isSuccess || user){
-      navigate("/login")
-      toast.success("An activation set to email")
-      
+    if (isSuccess || user) {
+      // Reset form data
+      setFormData({
+        first_name: "",
+        last_name: "",
+        email: "",
+        mobile: "",
+        password: "",
+        re_password: "",
+      });
+      // Redirect to login page after successful registration
+      navigate("/login");
+      // Fetch user info after registration
+      dispatch(getUserInfo());
+      // Reset auth state
+      dispatch(reset());
     }
-    dispatch(reset())
-  
-    
-  },[isError,isSuccess,user,navigate,dispatch])
+  }, [isError, isSuccess, user, navigate, dispatch, message]);
   
 
   return (

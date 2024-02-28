@@ -21,11 +21,16 @@ function Header() {
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    const handleLogout = () => {
-        dispatch(logout()); // Dispatch the logout action
-        dispatch(reset())
-        navigate("/login")
-        toast.success("logout succesfull")
+    const handleLogout = async () => {
+        try {
+            await dispatch(logout()); // Dispatch the logout action
+            dispatch(reset()); // Dispatch the reset action after logout is completed
+            navigate("/login")
+            toast.success("logout succesfull")
+        } catch (error) {
+            // Handle any logout errors here
+            console.error("Logout error:", error);
+        }
     };
 
     const menu=[

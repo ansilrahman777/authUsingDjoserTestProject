@@ -2,9 +2,12 @@ import Header from '../Components/User/Header/Header';
 import home_bg from './../assets/Images/home_bg.jpg';
 import dubai_img from './../assets/Images/dubai_img.jpg'
 import './../index.css'
+import { useSelector } from 'react-redux';
 
 
 function HomePage() {
+
+  const {userInfo}=useSelector((state)=>state.auth)
 
   const locations = [
     { name: 'DUBAI', color: 'bg-orange-500' },
@@ -46,6 +49,14 @@ function HomePage() {
     <>
       <div className='min-h-screen bg-cover' style={{ backgroundImage: `url(${home_bg})`, backgroundSize: 'cover' }}>
         <Header />
+        <div className="flex flex-col items-center justify-center flex-grow mt-32 cherry-bomb text-black text-4xl decoration-red-800">
+        <h1 className="text-center cherry-bomb text-ba text-neutral-800 decoration-red-800  font-extrabold text-8xl mb-4">Welcome {userInfo ? userInfo.first_name : 'Traveller'}</h1>
+          We're aware of your travel arrangements
+          <p className=" items-center text-center cherry-bomb text-black  text-xl">
+          BACKPACKERZ is a platform for adventurers to connect, </p>
+          <p className=" items-center text-center cherry-bomb text-black text-xl">
+          offering thrilling experiential stays in breathtaking properties and curated destination tours.</p>
+        </div>
       </div>
 
       <div className="p-10">

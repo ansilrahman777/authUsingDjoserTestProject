@@ -34,3 +34,45 @@ class User(AbstractBaseUser, PermissionsMixin):
     @property
     def get_full_name(self):
         return f"{self.first_name} {self.last_name}"
+
+
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+class Package(models.Model):
+    package_name = models.CharField(max_length=100)
+    description = models.TextField()
+    location = models.CharField(max_length=100)
+    image_url = models.URLField()
+    season = models.CharField(max_length=50)
+    pricing = models.DecimalField(max_digits=10, decimal_places=2)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Foreign key relationship with User model
+
+    def __str__(self):
+        return self.package_name
+
+
+class PackageInclusion(models.Model):
+    package = models.ForeignKey('Package', related_name='inclusions', on_delete=models.CASCADE)
+    inclusion = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.inclusion
+
+class PackageExclusion(models.Model):
+    package = models.ForeignKey('Package', related_name='exclusions', on_delete=models.CASCADE)
+    exclusion = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.exclusion
+
+class DayItinerary(models.Model):
+    package = models.ForeignKey('Package', related_name='itinerary', on_delete=models.CASCADE)
+    day = models.PositiveIntegerField()
+    description = models.TextField()
+    image_url = models.URLField()
+    activity = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f'Day {self.day} - {self.package.package_name}'

@@ -4,11 +4,14 @@ import { FaUser } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import Header from '../Components/User/Header/Header';
-import { login,reset } from '../redux/auth/authSlice';
+import { login,reset,getUserInfo } from '../redux/auth/authSlice';
 import { useDispatch ,useSelector} from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import Spinner from '../Components/Spinner';
 import { toast } from 'react-toastify';
+
+
+
 const LoginPage = () => {
 
   const [formData, setFormData] = useState({
@@ -47,9 +50,11 @@ const LoginPage = () => {
       toast.error(message)
     }
     if (isSuccess || user){
-      navigate("/")      
+      navigate("/")    
+
     }
     dispatch(reset())
+    dispatch(getUserInfo())
   
     
   },[isError,isSuccess,user,navigate,dispatch])

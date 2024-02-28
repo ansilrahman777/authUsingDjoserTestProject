@@ -4,6 +4,7 @@ const BACKEND_DOMAIN="http://127.0.0.1:8000"
 const REGISTER_URL=  `${BACKEND_DOMAIN}/api/users/`
 const LOGIN_URL=  `${BACKEND_DOMAIN}/api/jwt/create/`
 const ACTIVATE_URL=  `${BACKEND_DOMAIN}/api/users/activation/`
+const GET_USER_INFO_URL=  `${BACKEND_DOMAIN}/api/users/me/`
 
 
 //User Register
@@ -55,6 +56,19 @@ const activate = async (userData) => {
     return response.data
 }
 
+//Get user data
+const gerUserInfo = async (accessToken) => {
+    const config = {
+        headers: {
+            "Authorization": `Bearer ${accessToken}`
+        }
+    }
 
-const authService = {register,login,logout,activate}
+    const response = await axios.get(GET_USER_INFO_URL, config)
+
+    return response.data
+}
+
+
+const authService = {register,login,logout,activate,gerUserInfo}
 export default authService

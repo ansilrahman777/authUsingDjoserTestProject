@@ -5,6 +5,7 @@ import authService from './authService';
 
 const initialState = {
     user:null,
+    userInfo:{},
     isError:false,
     isSuccess:false,
     isLoading:false,
@@ -25,7 +26,7 @@ export const register = createAsyncThunk(
 )
 
 export const login = createAsyncThunk(
-    "/authlogin",
+    "auth/login",
     async(userData,tunkAPI)=>{
         try{
             return await authService.login(userData)
@@ -53,6 +54,20 @@ export const activate = createAsyncThunk(
             const message = (error.response && error.response.data
                 && error.response.data.message) || error.message || error.toString()
            return tunkAPI.rejectWithValue(message) 
+        }   
+    }
+)
+
+export const getUserInfo = createAsyncThunk(
+    "auth/gerUserInfo",
+    async(_,thunkAPI)=>{
+        try{
+            const accessToken=thunkAPI.getState().auth.user.access
+            return await authService.gerUserInfo(accessToken)
+        } catch (error){
+            const message = (error.response && error.response.data
+                && error.response.data.message) || error.message || error.toString()
+           return thunkAPI.rejectWithValue(message) 
         }   
     }
 )
@@ -104,6 +119,7 @@ export  const authSlice = createSlice({
         })
         .addCase(logout.fulfilled,(state)=>{
             state.user=null
+            state.userInfo = {}
         })
         .addCase(activate.pending,(state)=>{
             state.isLoading=true
@@ -119,6 +135,9 @@ export  const authSlice = createSlice({
             state.isError=true
             state.message=action.payload
             state.user=null
+        })
+        .addCase(getUserInfo.fulfilled,(state,action)=>{
+            state.userInfo=action.payload
         })
         
 

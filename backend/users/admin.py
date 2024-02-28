@@ -28,3 +28,26 @@ class UserAdmin(BaseUserAdmin):
     )
 
 admin.site.register(User, UserAdmin)
+
+from django.contrib import admin
+from .models import Package, PackageInclusion, PackageExclusion, DayItinerary
+
+@admin.register(Package)
+class PackageAdmin(admin.ModelAdmin):
+    list_display = ('id', 'package_name', 'description', 'location', 'season', 'pricing', 'user')
+    list_filter = ('location', 'season', 'user')
+    search_fields = ('package_name', 'location', 'season')
+    readonly_fields = ('id',)
+
+@admin.register(PackageInclusion)
+class PackageInclusionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'package', 'inclusion')
+
+@admin.register(PackageExclusion)
+class PackageExclusionAdmin(admin.ModelAdmin):
+    list_display = ('id', 'package', 'exclusion')
+
+@admin.register(DayItinerary)
+class DayItineraryAdmin(admin.ModelAdmin):
+    list_display = ('id', 'package', 'day', 'description', 'activity')
+
