@@ -1,3 +1,2 @@
-Backpackerz 
-A compelete Travel Package Booking website 
-(work on going)
+just demo using djoser library for user authenticaion
+(not fully complete)
